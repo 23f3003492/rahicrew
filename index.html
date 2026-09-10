@@ -409,6 +409,34 @@
     display: none !important;
   }
 </style>
+	<script>
+(() => {
+  const removeItems = new Set([
+    "Portfolio",
+    "Process",
+    "Testimonials",
+    "Pricing",
+    "FAQs"
+  ]);
+
+  function cleanMenu() {
+    document.querySelectorAll("a").forEach(a => {
+      if (removeItems.has(a.textContent.trim())) {
+        a.style.setProperty("display", "none", "important");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", cleanMenu);
+
+  const observer = new MutationObserver(cleanMenu);
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="c69ab11867646f0fa73eb3bdb60728f278c51f6d3f5f44bd66456fcf1644b44d" data-no-nt></script>
