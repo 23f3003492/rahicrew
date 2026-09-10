@@ -409,112 +409,65 @@
     display: none !important;
   }
 </style>
-	<script>
-(() => {
-  const removeItems = new Set([
-    "Portfolio",
-    "Process",
-    "Testimonials",
-    "Pricing",
-    "FAQs"
-  ]);
-
-  function cleanMenu() {
-    document.querySelectorAll("a").forEach(a => {
-      if (removeItems.has(a.textContent.trim())) {
-        a.style.setProperty("display", "none", "important");
-      }
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", cleanMenu);
-
-  const observer = new MutationObserver(cleanMenu);
-
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true
-  });
-})();
-</script>
 <script>
 (() => {
-
-  function fixRahiMenu() {
-
+  function fixMenu() {
     document.querySelectorAll("a").forEach(link => {
-
       const text = link.textContent.trim();
 
       // Portfolio -> About Us
       if (text === "Portfolio") {
         const p = link.querySelector("p");
-
         if (p) p.textContent = "About Us";
 
-        link.setAttribute("href", "./#about");
+        link.href = "./#about";
         link.removeAttribute("data-framer-page-link-current");
-
-        link.style.setProperty(
-          "display",
-          "flex",
-          "important"
-        );
+        link.style.setProperty("display", "flex", "important");
       }
 
       // Process -> Contact Us
       if (text === "Process") {
         const p = link.querySelector("p");
-
         if (p) p.textContent = "Contact Us";
 
-        link.setAttribute("href", "./#contact");
+        link.href = "./#contact";
         link.removeAttribute("data-framer-page-link-current");
-
-        link.style.setProperty(
-          "display",
-          "flex",
-          "important"
-        );
+        link.style.setProperty("display", "flex", "important");
       }
 
-      // Hide remaining unwanted items
+      // hide remaining old links
       if (
         text === "Testimonials" ||
         text === "Pricing" ||
         text === "FAQs"
       ) {
-        link.style.setProperty(
-          "display",
-          "none",
-          "important"
-        );
+        link.style.setProperty("display", "none", "important");
       }
-
     });
 
-  }
-
-  // initial
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      fixRahiMenu
+    // Add contact anchor to footer/contact block
+    const contactBox = document.querySelector(
+      '[data-framer-name="Contact Information"]'
     );
-  } else {
-    fixRahiMenu();
+
+    if (contactBox) {
+      const section = contactBox.closest(".framer-g3xhlm") || contactBox;
+      section.id = "contact";
+    }
   }
 
-  // Framer may rebuild menu
-  const observer = new MutationObserver(() => {
-    fixRahiMenu();
-  });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fixMenu);
+  } else {
+    fixMenu();
+  }
+
+  const observer = new MutationObserver(fixMenu);
 
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true
   });
-
 })();
 </script></head>
 <body>
