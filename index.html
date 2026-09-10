@@ -437,6 +437,67 @@
   });
 })();
 </script>
+	<script>
+(() => {
+  function updateRahiMenu() {
+    const links = [...document.querySelectorAll("a")];
+
+    const benefits = links.find(
+      a => a.textContent.trim() === "Benefits"
+    );
+
+    if (!benefits) return;
+
+    const menuItemWrapper = benefits.parentElement;
+    const menuContainer = menuItemWrapper.parentElement;
+
+    if (!menuContainer) return;
+
+    // ABOUT US
+    if (!document.querySelector('[data-rahi-added="about"]')) {
+      const aboutWrapper = menuItemWrapper.cloneNode(true);
+      const aboutLink = aboutWrapper.querySelector("a");
+
+      aboutLink.href = "./#about";
+      aboutLink.removeAttribute("data-framer-page-link-current");
+      aboutLink.style.removeProperty("display");
+      aboutLink.setAttribute("data-rahi-added", "about");
+
+      const text = aboutLink.querySelector("p");
+      if (text) text.textContent = "About Us";
+
+      menuContainer.appendChild(aboutWrapper);
+    }
+
+    // CONTACT US
+    if (!document.querySelector('[data-rahi-added="contact"]')) {
+      const contactWrapper = menuItemWrapper.cloneNode(true);
+      const contactLink = contactWrapper.querySelector("a");
+
+      contactLink.href = "./#contact";
+      contactLink.removeAttribute("data-framer-page-link-current");
+      contactLink.style.removeProperty("display");
+      contactLink.setAttribute("data-rahi-added", "contact");
+
+      const text = contactLink.querySelector("p");
+      if (text) text.textContent = "Contact Us";
+
+      // last item, so remove bottom border
+      contactLink.style.setProperty("--border-bottom-width", "0px");
+
+      menuContainer.appendChild(contactWrapper);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", updateRahiMenu);
+
+  const observer = new MutationObserver(updateRahiMenu);
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="c69ab11867646f0fa73eb3bdb60728f278c51f6d3f5f44bd66456fcf1644b44d" data-no-nt></script>
