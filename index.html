@@ -409,67 +409,91 @@
     display: none !important;
   }
 </style>
+<style>
+/* Portfolio -> About Us */
+.framer-n5jez7-container > a {
+    display: flex !important;
+}
+
+/* Process -> Contact Us */
+.framer-1pq8oki-container > a {
+    display: flex !important;
+}
+
+/* Remaining unwanted links */
+.framer-66wddz-container,
+.framer-1qrke9e-container,
+.framer-1cdv1gd-container {
+    display: none !important;
+}
+</style>
+
 <script>
-(() => {
-  function fixMenu() {
-    document.querySelectorAll("a").forEach(link => {
-      const text = link.textContent.trim();
+(function () {
 
-      // Portfolio -> About Us
-      if (text === "Portfolio") {
-        const p = link.querySelector("p");
-        if (p) p.textContent = "About Us";
+    function changeMenu() {
 
-        link.href = "./#about";
-        link.removeAttribute("data-framer-page-link-current");
-        link.style.setProperty("display", "flex", "important");
-      }
+        /* Portfolio -> About Us */
+        const about = document.querySelector(
+            ".framer-n5jez7-container > a"
+        );
 
-      // Process -> Contact Us
-      if (text === "Process") {
-        const p = link.querySelector("p");
-        if (p) p.textContent = "Contact Us";
+        if (about) {
+            about.style.setProperty("display", "flex", "important");
+            about.setAttribute("href", "./#about");
+            about.removeAttribute("data-framer-page-link-current");
 
-        link.href = "./#contact";
-        link.removeAttribute("data-framer-page-link-current");
-        link.style.setProperty("display", "flex", "important");
-      }
+            const text = about.querySelector("p");
+            if (text) text.textContent = "About Us";
+        }
 
-      // hide remaining old links
-      if (
-        text === "Testimonials" ||
-        text === "Pricing" ||
-        text === "FAQs"
-      ) {
-        link.style.setProperty("display", "none", "important");
-      }
-    });
+        /* Process -> Contact Us */
+        const contact = document.querySelector(
+            ".framer-1pq8oki-container > a"
+        );
 
-    // Add contact anchor to footer/contact block
-    const contactBox = document.querySelector(
-      '[data-framer-name="Contact Information"]'
-    );
+        if (contact) {
+            contact.style.setProperty("display", "flex", "important");
+            contact.setAttribute("href", "./#contact");
+            contact.removeAttribute("data-framer-page-link-current");
 
-    if (contactBox) {
-      const section = contactBox.closest(".framer-g3xhlm") || contactBox;
-      section.id = "contact";
+            const text = contact.querySelector("p");
+            if (text) text.textContent = "Contact Us";
+        }
+
+        /* Give contact/footer section an ID */
+        const contactInfo = document.querySelector(
+            '[data-framer-name="Contact Information"]'
+        );
+
+        if (contactInfo) {
+            const footer =
+                contactInfo.closest('[data-framer-name="Container"]');
+
+            if (footer) {
+                footer.id = "contact";
+            }
+        }
     }
-  }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fixMenu);
-  } else {
-    fixMenu();
-  }
+    document.addEventListener("DOMContentLoaded", changeMenu);
+    window.addEventListener("load", changeMenu);
 
-  const observer = new MutationObserver(fixMenu);
+    /* Framer renders menu later, so retry */
+    let count = 0;
 
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true
-  });
+    const timer = setInterval(() => {
+        changeMenu();
+        count++;
+
+        if (count >= 20) {
+            clearInterval(timer);
+        }
+    }, 500);
+
 })();
-</script></head>
+</script>
+</head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="c69ab11867646f0fa73eb3bdb60728f278c51f6d3f5f44bd66456fcf1644b44d" data-no-nt></script>
 	<!-- Start of bodyStart -->
