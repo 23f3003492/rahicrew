@@ -409,6 +409,36 @@
     display: none !important;
   }
 </style>
+	<script>
+(() => {
+  const removeItems = new Set([
+    "Portfolio",
+    "Process",
+    "Testimonials",
+    "Pricing",
+    "FAQs"
+  ]);
+
+  function cleanMenu() {
+    document.querySelectorAll("a").forEach(a => {
+      if (removeItems.has(a.textContent.trim())) {
+        a.style.setProperty("display", "none", "important");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", cleanMenu);
+
+  const observer = new MutationObserver(cleanMenu);
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
+
+</head>
 <style>
 /* Portfolio -> About Us */
 .framer-n5jez7-container > a {
