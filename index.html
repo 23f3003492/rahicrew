@@ -437,68 +437,86 @@
   });
 })();
 </script>
-	<script>
+<script>
 (() => {
-  function updateRahiMenu() {
-    const links = [...document.querySelectorAll("a")];
 
-    const benefits = links.find(
-      a => a.textContent.trim() === "Benefits"
-    );
+  function fixRahiMenu() {
 
-    if (!benefits) return;
+    document.querySelectorAll("a").forEach(link => {
 
-    const menuItemWrapper = benefits.parentElement;
-    const menuContainer = menuItemWrapper.parentElement;
+      const text = link.textContent.trim();
 
-    if (!menuContainer) return;
+      // Portfolio -> About Us
+      if (text === "Portfolio") {
+        const p = link.querySelector("p");
 
-    // ABOUT US
-    if (!document.querySelector('[data-rahi-added="about"]')) {
-      const aboutWrapper = menuItemWrapper.cloneNode(true);
-      const aboutLink = aboutWrapper.querySelector("a");
+        if (p) p.textContent = "About Us";
 
-      aboutLink.href = "./#about";
-      aboutLink.removeAttribute("data-framer-page-link-current");
-      aboutLink.style.removeProperty("display");
-      aboutLink.setAttribute("data-rahi-added", "about");
+        link.setAttribute("href", "./#about");
+        link.removeAttribute("data-framer-page-link-current");
 
-      const text = aboutLink.querySelector("p");
-      if (text) text.textContent = "About Us";
+        link.style.setProperty(
+          "display",
+          "flex",
+          "important"
+        );
+      }
 
-      menuContainer.appendChild(aboutWrapper);
-    }
+      // Process -> Contact Us
+      if (text === "Process") {
+        const p = link.querySelector("p");
 
-    // CONTACT US
-    if (!document.querySelector('[data-rahi-added="contact"]')) {
-      const contactWrapper = menuItemWrapper.cloneNode(true);
-      const contactLink = contactWrapper.querySelector("a");
+        if (p) p.textContent = "Contact Us";
 
-      contactLink.href = "./#contact";
-      contactLink.removeAttribute("data-framer-page-link-current");
-      contactLink.style.removeProperty("display");
-      contactLink.setAttribute("data-rahi-added", "contact");
+        link.setAttribute("href", "./#contact");
+        link.removeAttribute("data-framer-page-link-current");
 
-      const text = contactLink.querySelector("p");
-      if (text) text.textContent = "Contact Us";
+        link.style.setProperty(
+          "display",
+          "flex",
+          "important"
+        );
+      }
 
-      // last item, so remove bottom border
-      contactLink.style.setProperty("--border-bottom-width", "0px");
+      // Hide remaining unwanted items
+      if (
+        text === "Testimonials" ||
+        text === "Pricing" ||
+        text === "FAQs"
+      ) {
+        link.style.setProperty(
+          "display",
+          "none",
+          "important"
+        );
+      }
 
-      menuContainer.appendChild(contactWrapper);
-    }
+    });
+
   }
 
-  document.addEventListener("DOMContentLoaded", updateRahiMenu);
+  // initial
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      fixRahiMenu
+    );
+  } else {
+    fixRahiMenu();
+  }
 
-  const observer = new MutationObserver(updateRahiMenu);
+  // Framer may rebuild menu
+  const observer = new MutationObserver(() => {
+    fixRahiMenu();
+  });
+
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true
   });
+
 })();
-</script>
-</head>
+</script></head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="c69ab11867646f0fa73eb3bdb60728f278c51f6d3f5f44bd66456fcf1644b44d" data-no-nt></script>
 	<!-- Start of bodyStart -->
